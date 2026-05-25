@@ -644,8 +644,27 @@ export const dbService = {
     }
 
     // Retrieve staging listing
-    const stagingListings = getLocal<ListingNew[]>('listings_new', []);
-    const staging = stagingListings.find(l => l.id === id);
+    let staging: ListingNew | undefined;
+
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase!
+          .from('listings_new')
+          .select('*')
+          .eq('id', id)
+          .maybeSingle();
+        if (!error && data) {
+          staging = data as ListingNew;
+        }
+      } catch (err) {
+        console.error('Supabase fetch staging for promotion failed:', err);
+      }
+    }
+
+    if (!staging) {
+      const stagingListings = getLocal<ListingNew[]>('listings_new', []);
+      staging = stagingListings.find(l => l.id === id);
+    }
     
     if (!staging) throw new Error('Staging listing not found.');
 
@@ -687,15 +706,19 @@ export const dbService = {
     if (isSupabaseConfigured) {
       try {
         // Start promotion transactions on Supabase
-        await supabase!.from('master_listings').insert([newMaster]);
-        await supabase!.from('listings_new').update({ verification_status: 'promoted' }).eq('id', id);
+        const { error: insertErr } = await supabase!.from('master_listings').insert([newMaster]);
+        if (insertErr) throw insertErr;
+
+        const { error: updateErr } = await supabase!.from('listings_new').update({ verification_status: 'promoted' }).eq('id', id);
+        if (updateErr) throw updateErr;
         
         // Seed default blank values into advertising, coa, and resolving tables
         await supabase!.from('advertising').insert([{ property_id: staging.property_id, title: staging.title }]);
         await supabase!.from('matching_coa').insert([{ property_id: staging.property_id }]);
         await supabase!.from('resolving_sales').insert([{ property_id: staging.property_id, salesperson_id: staging.salesperson_id, salesperson_name: staging.salesperson_name }]);
-      } catch (err) {
+      } catch (err: any) {
         console.error('Supabase promotion transaction failed:', err);
+        throw new Error(`Supabase promotion transaction failed: ${err.message || err}`);
       }
     }
 
@@ -706,7 +729,8 @@ export const dbService = {
     setLocal('master_listings', currentMasters);
 
     // Update Staging status
-    const updatedStaging = stagingListings.map(l => l.id === id ? { ...l, verification_status: 'promoted' as const } : l);
+    const localStaging = getLocal<ListingNew[]>('listings_new', []);
+    const updatedStaging = localStaging.map((l: ListingNew) => l.id === id ? { ...l, verification_status: 'promoted' as const } : l);
     setLocal('listings_new', updatedStaging);
 
     // Automatically seed other parallel operational databases for this Property ID
