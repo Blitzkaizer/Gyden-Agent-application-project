@@ -204,7 +204,7 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
       <div style={{ display: 'grid', gridTemplateColumns: selectedPropId ? '1.2fr 0.8fr' : '1fr', gap: '24px', transition: 'grid-template-columns 0.3s ease' }}>
         
         {/* Ledger Table */}
-        <div className="glass-panel" style={{ padding: '20px', overflowX: 'auto' }}>
+        <div className="glass-panel" style={{ padding: '20px', overflowX: 'auto', maxHeight: '72vh', overflowY: 'auto' }}>
           {loading ? (
             <div style={{ padding: '30px', textAlign: 'center' }}>Syncing data node records...</div>
           ) : filteredListings.length === 0 ? (
@@ -215,30 +215,31 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid rgba(6,182,212,0.2)', color: 'var(--color-cyan)', fontFamily: 'JetBrains Mono', fontSize: '0.75rem', whiteSpace: 'nowrap' }}>
-                  <th style={{ padding: '10px 12px' }}>MARKET RATING</th>
-                  <th style={{ padding: '10px 12px' }}>CODE</th>
-                  <th style={{ padding: '10px 12px' }}>SALE/ RENT</th>
-                  <th style={{ padding: '10px 12px' }}>STATE</th>
-                  <th style={{ padding: '10px 12px' }}>PROPERTY TYPE</th>
-                  <th style={{ padding: '10px 12px' }}>ROOMS / REMARKS</th>
-                  <th style={{ padding: '10px 12px' }}>ADDRESS</th>
-                  <th style={{ padding: '10px 12px' }}>UNIT NO</th>
-                  <th style={{ padding: '10px 12px' }}>SIZE</th>
-                  <th style={{ padding: '10px 12px' }}>OWNER/ AGENT NAME</th>
-                  <th style={{ padding: '10px 12px' }}>CONTACT</th>
-                  <th style={{ padding: '10px 12px' }}>PIC</th>
-                  <th style={{ padding: '10px 12px' }}>GDRIVE LINK</th>
-                  <th style={{ padding: '10px 12px' }}>WA TEMPLATE</th>
-                  <th style={{ padding: '10px 12px' }}>PRICE</th>
-                  <th style={{ padding: '10px 12px' }}>REMARK</th>
-                  <th style={{ padding: '10px 12px' }}>LAST FOLLOW UP</th>
-                  <th style={{ padding: '10px 12px' }}>FOLLOW UP</th>
-                  <th style={{ padding: '10px 12px' }}>AD</th>
-                  <th style={{ padding: '10px 12px' }}>CO-AGENCY DUE</th>
-                  <th style={{ padding: '10px 12px' }}>ALL SHEETS</th>
-                  <th style={{ padding: '10px 12px' }}>DATE ADDED</th>
-                  <th style={{ padding: '10px 12px' }}>PRIVATE REMARKS</th>
-                  <th style={{ padding: '10px 12px' }}>ACTIONS</th>
+                  <th className="cyber-table-header-cell">MARKET RATING</th>
+                  <th className="cyber-table-header-cell">CODE</th>
+                  <th className="cyber-table-header-cell">STATUS</th>
+                  <th className="cyber-table-header-cell">SALE/ RENT</th>
+                  <th className="cyber-table-header-cell">STATE</th>
+                  <th className="cyber-table-header-cell">PROPERTY TYPE</th>
+                  <th className="cyber-table-header-cell">ROOMS / REMARKS</th>
+                  <th className="cyber-table-header-cell">ADDRESS</th>
+                  <th className="cyber-table-header-cell">UNIT NO</th>
+                  <th className="cyber-table-header-cell">SIZE</th>
+                  <th className="cyber-table-header-cell">OWNER/ AGENT NAME</th>
+                  <th className="cyber-table-header-cell">CONTACT</th>
+                  <th className="cyber-table-header-cell">PIC</th>
+                  <th className="cyber-table-header-cell">GDRIVE LINK</th>
+                  <th className="cyber-table-header-cell">WA TEMPLATE</th>
+                  <th className="cyber-table-header-cell">PRICE</th>
+                  <th className="cyber-table-header-cell">REMARK</th>
+                  <th className="cyber-table-header-cell">LAST FOLLOW UP</th>
+                  <th className="cyber-table-header-cell">FOLLOW UP</th>
+                  <th className="cyber-table-header-cell">AD</th>
+                  <th className="cyber-table-header-cell">CO-AGENCY DUE</th>
+                  <th className="cyber-table-header-cell">ALL SHEETS</th>
+                  <th className="cyber-table-header-cell">DATE ADDED</th>
+                  <th className="cyber-table-header-cell">PRIVATE REMARKS</th>
+                  <th className="cyber-table-header-cell">ACTIONS</th>
                 </tr>
               </thead>
               <tbody>
@@ -263,24 +264,53 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
                   return (
                     <tr 
                       key={item.id}
+                      className="cyber-table-row"
                       style={{ 
                         borderBottom: '1px solid var(--border-glass)',
-                        background: selectedPropId === item.property_id ? 'rgba(6,182,212,0.04)' : 'transparent',
-                        transition: 'background 0.2s ease',
+                        background: selectedPropId === item.property_id ? 'rgba(6,182,212,0.06)' : 'transparent',
                         whiteSpace: 'nowrap'
                       }}
                     >
                       {/* 1. MARKET RATING */}
-                      <td style={{ padding: '12px', fontWeight: 700, color: 'var(--color-amber)' }}>
+                      <td style={{ padding: '12px', fontWeight: 700, color: 'var(--color-amber)', textShadow: (item.market_rating === 'A+' || item.market_rating === 'A') ? '0 0 8px var(--color-amber-glow)' : 'none' }}>
                         {item.market_rating || 'D'}
                       </td>
  
                       {/* 2. CODE */}
-                      <td 
-                        onClick={() => openFollowUpDrawer(item.property_id)}
-                        style={{ padding: '12px', fontFamily: 'JetBrains Mono', fontWeight: 600, color: 'var(--color-cyan)', cursor: 'pointer' }}
-                      >
-                        {item.property_id}
+                      <td style={{ padding: '12px' }}>
+                        <span 
+                          onClick={() => openFollowUpDrawer(item.property_id)}
+                          className="cyber-code-badge"
+                          style={{ cursor: 'pointer' }}
+                        >
+                          {item.property_id}
+                        </span>
+                      </td>
+
+                      {/* 2.5 STATUS */}
+                      <td style={{ padding: '12px' }}>
+                        {isEditing ? (
+                          <select
+                            className="cyber-input"
+                            value={editStatus}
+                            onChange={e => setEditStatus(e.target.value as any)}
+                            style={{ padding: '2px 6px', fontSize: '0.8rem', background: '#090d16', color: 'white', width: '90px' }}
+                          >
+                            <option value="active">Active</option>
+                            <option value="sold">Sold</option>
+                            <option value="rented">Rented</option>
+                            <option value="inactive">Inactive</option>
+                          </select>
+                        ) : (
+                          <span className={`cyber-badge ${
+                            item.status === 'active' ? 'cyber-badge-green' :
+                            item.status === 'sold' ? 'cyber-badge-amber' :
+                            item.status === 'rented' ? 'cyber-badge-cyan' :
+                            'cyber-badge-red'
+                          }`} style={{ fontSize: '0.65rem' }}>
+                            {item.status ? item.status.toUpperCase() : 'ACTIVE'}
+                          </span>
+                        )}
                       </td>
  
                       {/* 3. SALE/ RENT */}

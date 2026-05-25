@@ -389,3 +389,40 @@ body {
 .impersonator-select:focus {
   box-shadow: 0 0 12px var(--color-cyan);
 }
+
+/* Custom Table enhancements */
+.cyber-table-row {
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cyber-table-row:hover {
+  background: rgba(6, 182, 212, 0.04) !important;
+  box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.08);
+}
+
+.cyber-table-header-cell {
+  position: sticky;
+  top: 0;
+  background: #090d16;
+  z-index: 10;
+  box-shadow: inset 0 -2px 0 rgba(6, 182, 212, 0.15);
+  padding: 12px;
+}
+
+.cyber-code-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--color-cyan);
+  background: rgba(6, 182, 212, 0.06);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-shadow: 0 0 4px var(--color-cyan-glow);
+  transition: all 0.2s ease;
+}
+
+.cyber-code-badge:hover {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 8px var(--color-cyan-glow);
+}
