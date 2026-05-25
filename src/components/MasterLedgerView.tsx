@@ -480,7 +480,7 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
 
         {/* Right Drawer: Spec Sheet Summary Dashboard + LISTING_UPDATE Follow-up Remarks list */}
         {selectedPropId && (
-          <div className="glass-panel" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px', height: '82vh', overflowY: 'auto' }}>
+          <div className="glass-panel" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', height: '82vh' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-glass)', paddingBottom: '8px' }}>
               <span style={{ fontFamily: 'JetBrains Mono', fontSize: '0.8rem', color: 'var(--color-purple)' }}>
                 SPEC SHEET DASHBOARD // {selectedPropId}
@@ -493,7 +493,8 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
               </button>
             </div>
 
-            {/* Spec Sheet Summary Grid */}
+            <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px', paddingRight: '4px' }}>
+              {/* Spec Sheet Summary Grid */}
             {selectedListing && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', borderBottom: '1px solid var(--border-glass)', paddingBottom: '16px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 16px', fontSize: '0.75rem' }}>
@@ -679,7 +680,8 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
               </form>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
       </div>
 
