@@ -129,21 +129,41 @@ ALTER TABLE public.matching_coa ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.resolving_sales ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 
--- Select/read permissions are public for listing catalog views
-CREATE POLICY "Enable select access for authenticated users" ON public.listings_new FOR SELECT USING (true);
-CREATE POLICY "Enable select access for authenticated users" ON public.master_listings FOR SELECT USING (true);
-CREATE POLICY "Enable select access for authenticated users" ON public.listing_updates FOR SELECT USING (true);
-CREATE POLICY "Enable select access for authenticated users" ON public.advertising FOR SELECT USING (true);
-CREATE POLICY "Enable select access for authenticated users" ON public.matching_coa FOR SELECT USING (true);
-CREATE POLICY "Enable select access for authenticated users" ON public.resolving_sales FOR SELECT USING (true);
-CREATE POLICY "Enable select access for authenticated users" ON public.audit_logs FOR SELECT USING (true);
+-- Staging Intake policies
+CREATE POLICY "Enable read for all" ON public.listings_new FOR SELECT USING (true);
+CREATE POLICY "Enable write for all" ON public.listings_new FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all" ON public.listings_new FOR UPDATE USING (true) WITH CHECK (true);
+CREATE POLICY "Enable delete for all" ON public.listings_new FOR DELETE USING (true);
 
--- Insert policies for staging (anyone can submit intake properties)
-CREATE POLICY "Enable insert for staging" ON public.listings_new FOR INSERT WITH CHECK (true);
-CREATE POLICY "Enable insert for remarks" ON public.listing_updates FOR INSERT WITH CHECK (true);
+-- Master Listings policies
+CREATE POLICY "Enable read for all" ON public.master_listings FOR SELECT USING (true);
+CREATE POLICY "Enable write for all" ON public.master_listings FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all" ON public.master_listings FOR UPDATE USING (true) WITH CHECK (true);
+CREATE POLICY "Enable delete for all" ON public.master_listings FOR DELETE USING (true);
 
--- Secure Audit Logs (Append-only)
-CREATE POLICY "Enable insert access for audit trail" ON public.audit_logs FOR INSERT WITH CHECK (true);
+-- Follow-ups remarks policies
+CREATE POLICY "Enable read for all" ON public.listing_updates FOR SELECT USING (true);
+CREATE POLICY "Enable write for all" ON public.listing_updates FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all" ON public.listing_updates FOR UPDATE USING (true) WITH CHECK (true);
+
+-- Advertising policies
+CREATE POLICY "Enable read for all" ON public.advertising FOR SELECT USING (true);
+CREATE POLICY "Enable write for all" ON public.advertising FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all" ON public.advertising FOR UPDATE USING (true) WITH CHECK (true);
+
+-- Co-agency policies
+CREATE POLICY "Enable read for all" ON public.matching_coa FOR SELECT USING (true);
+CREATE POLICY "Enable write for all" ON public.matching_coa FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all" ON public.matching_coa FOR UPDATE USING (true) WITH CHECK (true);
+
+-- Resolving Sales policies
+CREATE POLICY "Enable read for all" ON public.resolving_sales FOR SELECT USING (true);
+CREATE POLICY "Enable write for all" ON public.resolving_sales FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable update for all" ON public.resolving_sales FOR UPDATE USING (true) WITH CHECK (true);
+
+-- Audit logs policies (Append-only)
+CREATE POLICY "Enable read for all" ON public.audit_logs FOR SELECT USING (true);
+CREATE POLICY "Enable write for all" ON public.audit_logs FOR INSERT WITH CHECK (true);
 CREATE POLICY "Disable edit on audit logs" ON public.audit_logs FOR UPDATE USING (false);
 CREATE POLICY "Disable delete on audit logs" ON public.audit_logs FOR DELETE USING (false);
 
