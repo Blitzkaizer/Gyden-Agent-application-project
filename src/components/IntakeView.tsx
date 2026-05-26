@@ -15,6 +15,7 @@ export const IntakeView: React.FC<IntakeViewProps> = ({ currentUser, onNavigateT
   const [showImporter, setShowImporter] = useState(false);
 
   // Form states
+  const [propertyIdInput, setPropertyIdInput] = useState('');
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
   const [price, setPrice] = useState('');
@@ -34,6 +35,115 @@ export const IntakeView: React.FC<IntakeViewProps> = ({ currentUser, onNavigateT
   const [gdriveLink, setGdriveLink] = useState('');
   const [finalWaTemplate, setFinalWaTemplate] = useState('');
   const [privateNotes, setPrivateNotes] = useState('');
+
+  // WhatsApp auto-parser function
+  const handleRawWaChange = (val: string) => {
+    setRawWaTemplate(val);
+    if (!val.trim()) return;
+
+    const lines = val.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    
+    // 1. Title (1st line)
+    if (lines.length > 0) {
+      setTitle(lines[0].replace(/\*/g, '').trim());
+    }
+
+    // 2. Address (2nd line)
+    if (lines.length > 1) {
+      setAddress(lines[1].replace(/\*/g, '').trim().toUpperCase());
+    }
+
+    // 3. Price
+    const priceMatch = val.match(/(?:Selling Price|Rental|Price):\s*(?:RM\s*)?([\d,]+)/i);
+    if (priceMatch) {
+      setPrice(priceMatch[1].trim());
+    }
+
+    // 4. Size
+    const sizeMatch = val.match(/(?:Build Up Area|Land Size & Area|Land Size|Size):\s*([^\n\r]+)/i);
+    if (sizeMatch) {
+      setSize(sizeMatch[1].trim());
+    }
+
+    // 5. GDrive Link
+    const driveMatch = val.match(/https?:\/\/drive\.google\.com[^\s\n\r]+/i);
+    if (driveMatch) {
+      setGdriveLink(driveMatch[0].trim());
+    }
+
+    // 6. Property Code & Sale/Rent
+    const codeMatch = val.match(/\b(SA|SZ|RA|RZ)\d+\b/i);
+    if (codeMatch) {
+      const code = codeMatch[0].toUpperCase();
+      setPropertyIdInput(code);
+      if (code.startsWith('R')) {
+        setSaleRent('rent');
+      } else if (code.startsWith('S')) {
+        setSaleRent('sale');
+      }
+    }
+
+    // 7. Property Type (Excel classifications mapping)
+    const typeText = val.toUpperCase();
+    if (typeText.includes('AGRICULTURAL LAND') || typeText.includes('AGRI LAND')) {
+      setPropertyType('A- AGRICULTURAL LAND');
+    } else if (typeText.includes('COMMERCIAL LAND')) {
+      setPropertyType('C- COMMERCIAL LAND');
+    } else if (typeText.includes('RESIDENTIAL LAND') || typeText.includes('BUNGALOW LAND')) {
+      setPropertyType('R- RESIDENTIAL LAND');
+    } else if (typeText.includes('FACTORY') || typeText.includes('WAREHOUSE') || typeText.includes('INDUSTRIAL')) {
+      setPropertyType('C- INDUSTRIAL');
+    } else if (typeText.includes('SHOPLOT') || typeText.includes('SHOP LOT') || typeText.includes('SHOPHOUSE') || typeText.includes('SHOP HOUSE') || typeText.includes('RETAIL')) {
+      setPropertyType('C- SHOPLOT / RETAIL');
+    } else if (typeText.includes('OFFICE') || typeText.includes('SOHO') || typeText.includes('SOVO')) {
+      setPropertyType('C- OFFICE');
+    } else if (typeText.includes('APARTMENT') || typeText.includes('APTMENT') || typeText.includes('CONDO') || typeText.includes('CONDOMINIUM') || typeText.includes('SERVICED APARTMENT') || typeText.includes('SERVICE APARTMENT') || typeText.includes('SRV RES') || typeText.includes('FLAT')) {
+      setPropertyType('R- APT/ CONDO / SR / FLAT');
+    } else if (typeText.includes('TERRACE') || typeText.includes('LINK HOUSE') || typeText.includes('LINKED HOUSE') || typeText.includes('SUPERLINK') || typeText.includes('SUPER LINK')) {
+      setPropertyType('R- TERRACE HOUSE');
+    } else if (typeText.match(/SEMI[- ]?D/) || typeText.includes('SEMI-DETACHED')) {
+      setPropertyType('R- SEMI-DETACHED HOUSE');
+    } else if (typeText.includes('BUNGALOW') || typeText.includes('VILLA')) {
+      setPropertyType('R- BUNGALOW / VILLA');
+    } else if (typeText.includes('TOWNHOUSE') || typeText.includes('TOWN HOUSE')) {
+      setPropertyType('R- TOWNHOUSE');
+    }
+
+    // 8. Rooms & Storeys
+    let rooms = [];
+    if (typeText.includes('STUDIO')) {
+      rooms.push('STUDIO');
+    }
+    const plusRoomMatch = typeText.match(/(\d+)\s*\+\s*(\d+)\s*(?:ROOM|BEDROOM)/);
+    if (plusRoomMatch) {
+      rooms.push(`${plusRoomMatch[1]}ROOM, +${plusRoomMatch[2]}ROOM`);
+    } else {
+      const bedMatch = typeText.match(/(\d+)\s*(?:BEDROOM|ROOM)/);
+      if (bedMatch) {
+        rooms.push(`${bedMatch[1]}ROOM`);
+      }
+    }
+    if (typeText.includes('SINGLE STOREY') || typeText.includes('1 STOREY')) {
+      rooms.push('1STOREY');
+    } else if (typeText.includes('DOUBLE STOREY') || typeText.includes('2 STOREY')) {
+      rooms.push('2STOREY');
+    } else {
+      const storeyMatch = typeText.match(/(\d+(?:\.5)?)\s*STOREY/);
+      if (storeyMatch) {
+        rooms.push(`${storeyMatch[1].replace(/\s+/g, '')}STOREY`);
+      }
+    }
+    const bathMatch = typeText.match(/(\d+)\s*(?:BATH|BATHROOM|B)\b/);
+    if (bathMatch && !typeText.includes('BLOCK')) {
+      const blockContext = typeText.match(/BLOCK\s+(\d+|[A-Z])/);
+      if (!blockContext || blockContext[1] !== bathMatch[1]) {
+        rooms.push(`${bathMatch[1]}B`);
+      }
+    }
+    if (rooms.length > 0) {
+      setRoomsRemarks(rooms.join(', '));
+    }
+  };
 
   // Sub-panel tabs state
   const [formTab, setFormTab] = useState<'specs' | 'client' | 'wa'>('specs');
@@ -105,11 +215,13 @@ export const IntakeView: React.FC<IntakeViewProps> = ({ currentUser, onNavigateT
         size,
         gdriveLink,
         finalWaTemplate,
-        privateNotes
+        privateNotes,
+        propertyIdInput
       );
       setSuccess('Property uploaded successfully to Intake (Staging Area).');
       
       // Reset form
+      setPropertyIdInput('');
       setTitle('');
       setAddress('');
       setPrice('');
@@ -301,18 +413,33 @@ export const IntakeView: React.FC<IntakeViewProps> = ({ currentUser, onNavigateT
           {/* TAB 1: Specs */}
           {formTab === 'specs' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono' }}>
-                  Listing Title <span style={{ color: 'var(--color-red)' }}>*</span>
-                </label>
-                <input 
-                  type="text" 
-                  className="cyber-input" 
-                  placeholder="e.g. Cyberjaya Smarthome Condominium"
-                  value={title}
-                  onChange={e => setTitle(e.target.value)}
-                  disabled={isSubmitting}
-                />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono' }}>
+                    Property Code (Optional)
+                  </label>
+                  <input 
+                    type="text" 
+                    className="cyber-input" 
+                    placeholder="e.g. SA1005 / RA643"
+                    value={propertyIdInput}
+                    onChange={e => setPropertyIdInput(e.target.value)}
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono' }}>
+                    Listing Title <span style={{ color: 'var(--color-red)' }}>*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    className="cyber-input" 
+                    placeholder="e.g. Cyberjaya Smarthome Condominium"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                    disabled={isSubmitting}
+                  />
+                </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '12px' }}>
@@ -564,15 +691,20 @@ export const IntakeView: React.FC<IntakeViewProps> = ({ currentUser, onNavigateT
           {formTab === 'wa' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono' }}>
-                  Raw WhatsApp Template
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono' }}>
+                    Raw WhatsApp Template
+                  </label>
+                  <span style={{ fontSize: '0.65rem', color: 'var(--color-green)', fontFamily: 'JetBrains Mono', textShadow: '0 0 4px var(--color-green-glow)' }}>
+                    ✨ AUTO-FILL ENABLED (PASTE RAW COPY)
+                  </span>
+                </div>
                 <textarea 
                   className="cyber-input font-mono" 
                   rows={6}
                   placeholder="Paste the raw WhatsApp post text copy received..."
                   value={rawWaTemplate}
-                  onChange={e => setRawWaTemplate(e.target.value)}
+                  onChange={e => handleRawWaChange(e.target.value)}
                   disabled={isSubmitting}
                   style={{ resize: 'vertical', fontSize: '0.75rem', fontFamily: 'JetBrains Mono' }}
                 />

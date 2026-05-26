@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Lock, Edit2, MessageSquare, Send, Save, X, Upload } from 'lucide-react';
 import { dbService } from '../services/db';
-import type { MasterListing, ListingUpdate, User, Advertising, MatchingCoa } from '../services/db';
+import type { MasterListing, ListingUpdate, User, Advertising, MatchingCoa, ResolvingSale } from '../services/db';
 import { CsvImporterModal } from './CsvImporterModal';
 
 interface MasterLedgerProps {
@@ -42,19 +42,22 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
   const [allUpdates, setAllUpdates] = useState<ListingUpdate[]>([]);
   const [allAds, setAllAds] = useState<Advertising[]>([]);
   const [allCoas, setAllCoas] = useState<MatchingCoa[]>([]);
+  const [allResolving, setAllResolving] = useState<ResolvingSale[]>([]);
 
   const fetchMaster = async () => {
     try {
-      const [listingsData, updatesData, adsData, coaData] = await Promise.all([
+      const [listingsData, updatesData, adsData, coaData, resolvingData] = await Promise.all([
         dbService.getMasterListings(),
         dbService.getAllListingUpdates ? dbService.getAllListingUpdates() : dbService.getListingUpdates(''),
         dbService.getAdvertisingListings(),
-        dbService.getMatchingCoaListings()
+        dbService.getMatchingCoaListings(),
+        dbService.getResolvingSales()
       ]);
       setListings(listingsData);
       setAllUpdates(updatesData);
       setAllAds(adsData);
       setAllCoas(coaData);
+      setAllResolving(resolvingData);
     } catch (err) {
       console.error('Error fetching master listings telemetry:', err);
     } finally {
@@ -124,6 +127,78 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
     }
   };
 
+  // Timing-based Follow-up status checker (Excel Q Tracker logic)
+  const getFollowUpStatus = (item: MasterListing, propUpdates: ListingUpdate[]): 'NOT NEEDED' | 'FOLLOW UP NEEDED' | 'FOLLOW UP SOON' | 'UP TO DATE' => {
+    const rating = (item.market_rating || '').toUpperCase();
+    if (!rating || rating.includes('COAGENCY')) {
+      return 'NOT NEEDED';
+    }
+
+    const validRatings = [
+      'A+ SUPER HOT DEAL', 'A+','SUPER HOT DEAL',
+      'A - BELOW MARKET', 'A', 'BELOW MARKET',
+      'B+ - CASH OUT', 'B+', 'CASH OUT',
+      'B - AT MARKET PRICE', 'B', 'AT MARKET PRICE',
+      'C - OVERPRICED', 'C', 'OVERPRICED',
+      'D - UNKNOWN MARKET', 'D', 'UNKNOWN MARKET',
+      'E - LISTING ON HOLD', 'E', 'ON HOLD', 'LISTING ON HOLD'
+    ];
+
+    const isValidRating = validRatings.some(vr => rating.includes(vr));
+    if (!isValidRating) {
+      return 'NOT NEEDED';
+    }
+
+    if (propUpdates.length === 0) {
+      return 'FOLLOW UP NEEDED';
+    }
+
+    const lastDate = new Date(propUpdates[0].updated_at);
+    const diffTime = Math.abs(new Date().getTime() - lastDate.getTime());
+    const elapsedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    const isSale = (item.sale_rent || '').toLowerCase() === 'sale';
+    const isOverpricedOrHold = rating.includes('C - OVERPRICED') || rating.includes('C ') || rating.includes('E - LISTING ON HOLD') || rating.includes('E ');
+    const isResidentialRental = !isSale && (
+      (item.property_type || '').toUpperCase().startsWith('R') ||
+      (item.property_id || '').toUpperCase().startsWith('R')
+    );
+
+    if (isSale) {
+      if (elapsedDays > 60) return 'FOLLOW UP NEEDED';
+      if (elapsedDays > 46) return 'FOLLOW UP SOON';
+      return 'UP TO DATE';
+    } else {
+      if (isOverpricedOrHold) {
+        if (elapsedDays > 180) return 'FOLLOW UP NEEDED';
+        if (elapsedDays > 90) return 'FOLLOW UP SOON';
+        return 'UP TO DATE';
+      } else if (isResidentialRental) {
+        if (elapsedDays > 30) return 'FOLLOW UP NEEDED';
+        if (elapsedDays > 21) return 'FOLLOW UP SOON';
+        return 'UP TO DATE';
+      } else {
+        if (elapsedDays > 60) return 'FOLLOW UP NEEDED';
+        if (elapsedDays > 46) return 'FOLLOW UP SOON';
+        return 'UP TO DATE';
+      }
+    }
+  };
+
+  // Cross-sheet sheets existence checker (Excel Column V logic)
+  const getAllSheetsStatus = (item: MasterListing): string => {
+    const existsCoa = allCoas.some(c => c.property_id === item.property_id);
+    const existsUpdate = allUpdates.some(u => u.property_id === item.property_id);
+    const existsAd = allAds.some(a => a.property_id === item.property_id);
+    const existsResolving = allResolving.some(r => r.property_id === item.property_id);
+
+    if (!existsCoa) return 'Missing Coagency';
+    if (!existsUpdate) return 'Missing Listing Update';
+    if (!existsResolving) return 'Missing Resolving';
+    if (!existsAd) return 'Missing Listing';
+    return '✓';
+  };
+
   // Filter listings
   const filteredListings = listings.filter(l => {
     const matchesSearch = l.title.toLowerCase().includes(search.toLowerCase()) || 
@@ -131,6 +206,29 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
                           l.address.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter ? l.status === statusFilter : true;
     return matchesSearch && matchesStatus;
+  });
+
+  // Sort listings: SA -> SZ -> RA -> RZ, then numerically (Excel sorting alignment)
+  const sortedListings = [...filteredListings].sort((a, b) => {
+    const getSortWeight = (code: string) => {
+      const upper = code.toUpperCase();
+      if (upper.startsWith('SA')) return 1;
+      if (upper.startsWith('SZ')) return 2;
+      if (upper.startsWith('RA')) return 3;
+      if (upper.startsWith('RZ')) return 4;
+      return 5;
+    };
+
+    const weightA = getSortWeight(a.property_id);
+    const weightB = getSortWeight(b.property_id);
+
+    if (weightA !== weightB) {
+      return weightA - weightB;
+    }
+
+    const numA = parseInt(a.property_id.replace(/\D/g, ''), 10) || 0;
+    const numB = parseInt(b.property_id.replace(/\D/g, ''), 10) || 0;
+    return numA - numB;
   });
 
   const isMelissaOrAdmin = currentUser.role === 'listing_melissa' || currentUser.role === 'admin';
@@ -243,7 +341,7 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
                 </tr>
               </thead>
               <tbody>
-                {filteredListings.map(item => {
+                {sortedListings.map(item => {
                   const isEditing = editPropId === item.property_id;
                   
                   // Mapped follow ups & updates
@@ -425,11 +523,19 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
  
                       {/* 18. FOLLOW UP */}
                       <td style={{ padding: '12px' }}>
-                        {propUpdates.length > 0 ? (
-                          <span className="cyber-badge cyber-badge-green" style={{ fontSize: '0.65rem' }}>✓ UP TO DATE</span>
-                        ) : (
-                          <span className="cyber-badge cyber-badge-red" style={{ fontSize: '0.65rem' }}>FOLLOW UP NEEDED</span>
-                        )}
+                        {(() => {
+                          const status = getFollowUpStatus(item, propUpdates);
+                          if (status === 'NOT NEEDED') {
+                            return <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'JetBrains Mono' }}>NOT NEEDED</span>;
+                          }
+                          if (status === 'UP TO DATE') {
+                            return <span className="cyber-badge cyber-badge-green" style={{ fontSize: '0.65rem' }}>✓ UP TO DATE</span>;
+                          }
+                          if (status === 'FOLLOW UP SOON') {
+                            return <span className="cyber-badge cyber-badge-amber" style={{ fontSize: '0.65rem' }}>⚠ SOON</span>;
+                          }
+                          return <span className="cyber-badge cyber-badge-red" style={{ fontSize: '0.65rem' }}>FOLLOW UP NEEDED</span>;
+                        })()}
                       </td>
  
                       {/* 19. AD */}
@@ -448,7 +554,13 @@ export const MasterLedgerView: React.FC<MasterLedgerProps> = ({ currentUser }) =
  
                       {/* 21. ALL SHEETS */}
                       <td style={{ padding: '12px' }}>
-                        <span className="cyber-badge cyber-badge-green" style={{ fontSize: '0.65rem' }}>✓ APPROVED</span>
+                        {(() => {
+                          const status = getAllSheetsStatus(item);
+                          if (status === '✓') {
+                            return <span className="cyber-badge cyber-badge-green" style={{ fontSize: '0.65rem' }}>✓ OK</span>;
+                          }
+                          return <span className="cyber-badge cyber-badge-amber" style={{ fontSize: '0.65rem' }}>{status.toUpperCase()}</span>;
+                        })()}
                       </td>
  
                       {/* 22. DATE ADDED */}

@@ -545,13 +545,17 @@ export const dbService = {
     size: string = '',
     gdriveLink: string = '',
     finalWaTemplate: string = '',
-    privateNotes: string = ''
+    privateNotes: string = '',
+    customPropertyId?: string
   ): Promise<ListingNew> => {
     const user = dbService.getCurrentUser();
     
-    // Auto generate property id: G-XXXX
-    const count = getLocal<ListingNew[]>('listings_new', []).length + getLocal<MasterListing[]>('master_listings', []).length + 1000;
-    const propertyId = `G-${count + 1}`;
+    // Auto generate property id: G-XXXX or use customPropertyId
+    let propertyId = customPropertyId ? customPropertyId.trim().toUpperCase() : '';
+    if (!propertyId) {
+      const count = getLocal<ListingNew[]>('listings_new', []).length + getLocal<MasterListing[]>('master_listings', []).length + 1000;
+      propertyId = `G-${count + 1}`;
+    }
 
     // Staging checklist validation check (GDrive photo link counts if no physical photos are attached)
     const isChecklistPassed = !!(title && address && priceRequested > 0 && ownerName && ownerContact && (photos.length > 0 || gdriveLink));

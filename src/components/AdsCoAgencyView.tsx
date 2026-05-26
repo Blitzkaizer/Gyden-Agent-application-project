@@ -3,6 +3,12 @@ import { Megaphone, Users, Search, Lock, Save, ExternalLink, Activity } from 'lu
 import { dbService } from '../services/db';
 import type { Advertising, MatchingCoa, User } from '../services/db';
 
+const extractAdId = (link: string | null | undefined): string | null => {
+  if (!link) return null;
+  const match = link.match(/\d+/);
+  return match ? match[0] : null;
+};
+
 
 interface AdsCoAgencyProps {
   currentUser: User;
@@ -244,30 +250,58 @@ export const AdsCoAgencyView: React.FC<AdsCoAgencyProps> = ({ currentUser }) => 
                             />
                           </div>
                         ) : (
-                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                             {item.iproperty_link ? (
-                              <a 
-                                href={item.iproperty_link} 
-                                target="_blank" 
-                                rel="noreferrer" 
-                                className="cyber-badge cyber-badge-cyan" 
-                                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
-                              >
-                                iProperty <ExternalLink size={10} />
-                              </a>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <a 
+                                  href={item.iproperty_link} 
+                                  target="_blank" 
+                                  rel="noreferrer" 
+                                  className="cyber-badge cyber-badge-cyan" 
+                                  style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+                                >
+                                  iProperty <ExternalLink size={10} />
+                                </a>
+                                {extractAdId(item.iproperty_link) && (
+                                  <a 
+                                    href={`https://www.iproperty.com.my/pro/v2/add-listing/${extractAdId(item.iproperty_link)}#/gallery`}
+                                    target="_blank" 
+                                    rel="noreferrer" 
+                                    className="cyber-badge cyber-badge-purple" 
+                                    style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+                                    title="Edit Gallery"
+                                  >
+                                    Gallery Editor <ExternalLink size={10} />
+                                  </a>
+                                )}
+                              </div>
                             ) : (
                               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>[iProperty link pending]</span>
                             )}
                             {item.propertyguru_link ? (
-                              <a 
-                                href={item.propertyguru_link} 
-                                target="_blank" 
-                                rel="noreferrer" 
-                                className="cyber-badge cyber-badge-green" 
-                                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
-                              >
-                                PropertyGuru <ExternalLink size={10} />
-                              </a>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <a 
+                                  href={item.propertyguru_link} 
+                                  target="_blank" 
+                                  rel="noreferrer" 
+                                  className="cyber-badge cyber-badge-green" 
+                                  style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+                                >
+                                  PropertyGuru <ExternalLink size={10} />
+                                </a>
+                                {extractAdId(item.propertyguru_link) && (
+                                  <a 
+                                    href={`https://agentnet.propertyguru.com.my/v3/create-listing/${extractAdId(item.propertyguru_link)}#/gallery`}
+                                    target="_blank" 
+                                    rel="noreferrer" 
+                                    className="cyber-badge cyber-badge-purple" 
+                                    style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', textDecoration: 'none' }}
+                                    title="Edit Gallery"
+                                  >
+                                    Gallery Editor <ExternalLink size={10} />
+                                  </a>
+                                )}
+                              </div>
                             ) : (
                               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>[PropertyGuru link pending]</span>
                             )}
