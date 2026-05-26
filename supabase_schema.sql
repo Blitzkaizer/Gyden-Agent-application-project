@@ -130,41 +130,65 @@ ALTER TABLE public.resolving_sales ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 
 -- Staging Intake policies
+DROP POLICY IF EXISTS "Enable read for all" ON public.listings_new;
 CREATE POLICY "Enable read for all" ON public.listings_new FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable write for all" ON public.listings_new;
 CREATE POLICY "Enable write for all" ON public.listings_new FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable update for all" ON public.listings_new;
 CREATE POLICY "Enable update for all" ON public.listings_new FOR UPDATE USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable delete for all" ON public.listings_new;
 CREATE POLICY "Enable delete for all" ON public.listings_new FOR DELETE USING (true);
 
 -- Master Listings policies
+DROP POLICY IF EXISTS "Enable read for all" ON public.master_listings;
 CREATE POLICY "Enable read for all" ON public.master_listings FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable write for all" ON public.master_listings;
 CREATE POLICY "Enable write for all" ON public.master_listings FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable update for all" ON public.master_listings;
 CREATE POLICY "Enable update for all" ON public.master_listings FOR UPDATE USING (true) WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable delete for all" ON public.master_listings;
 CREATE POLICY "Enable delete for all" ON public.master_listings FOR DELETE USING (true);
 
 -- Follow-ups remarks policies
+DROP POLICY IF EXISTS "Enable read for all" ON public.listing_updates;
 CREATE POLICY "Enable read for all" ON public.listing_updates FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable write for all" ON public.listing_updates;
 CREATE POLICY "Enable write for all" ON public.listing_updates FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable update for all" ON public.listing_updates;
 CREATE POLICY "Enable update for all" ON public.listing_updates FOR UPDATE USING (true) WITH CHECK (true);
 
 -- Advertising policies
+DROP POLICY IF EXISTS "Enable read for all" ON public.advertising;
 CREATE POLICY "Enable read for all" ON public.advertising FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable write for all" ON public.advertising;
 CREATE POLICY "Enable write for all" ON public.advertising FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable update for all" ON public.advertising;
 CREATE POLICY "Enable update for all" ON public.advertising FOR UPDATE USING (true) WITH CHECK (true);
 
 -- Co-agency policies
+DROP POLICY IF EXISTS "Enable read for all" ON public.matching_coa;
 CREATE POLICY "Enable read for all" ON public.matching_coa FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable write for all" ON public.matching_coa;
 CREATE POLICY "Enable write for all" ON public.matching_coa FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable update for all" ON public.matching_coa;
 CREATE POLICY "Enable update for all" ON public.matching_coa FOR UPDATE USING (true) WITH CHECK (true);
 
 -- Resolving Sales policies
+DROP POLICY IF EXISTS "Enable read for all" ON public.resolving_sales;
 CREATE POLICY "Enable read for all" ON public.resolving_sales FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable write for all" ON public.resolving_sales;
 CREATE POLICY "Enable write for all" ON public.resolving_sales FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable update for all" ON public.resolving_sales;
 CREATE POLICY "Enable update for all" ON public.resolving_sales FOR UPDATE USING (true) WITH CHECK (true);
 
 -- Audit logs policies (Append-only)
+DROP POLICY IF EXISTS "Enable read for all" ON public.audit_logs;
 CREATE POLICY "Enable read for all" ON public.audit_logs FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable write for all" ON public.audit_logs;
 CREATE POLICY "Enable write for all" ON public.audit_logs FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Disable edit on audit logs" ON public.audit_logs;
 CREATE POLICY "Disable edit on audit logs" ON public.audit_logs FOR UPDATE USING (false);
+DROP POLICY IF EXISTS "Disable delete on audit logs" ON public.audit_logs;
 CREATE POLICY "Disable delete on audit logs" ON public.audit_logs FOR DELETE USING (false);
 
 -- 9. PORTAL ACCOUNTS TABLE (Restricted Signups)
@@ -181,7 +205,10 @@ CREATE TABLE IF NOT EXISTS public.portal_accounts (
 
 ALTER TABLE public.portal_accounts ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Enable select access for authenticated users" ON public.portal_accounts;
 CREATE POLICY "Enable select access for authenticated users" ON public.portal_accounts FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Enable insert for registration signups" ON public.portal_accounts;
 CREATE POLICY "Enable insert for registration signups" ON public.portal_accounts FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Enable update for admin approval vetting" ON public.portal_accounts;
 CREATE POLICY "Enable update for admin approval vetting" ON public.portal_accounts FOR UPDATE USING (true);
 

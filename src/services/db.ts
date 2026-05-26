@@ -152,195 +152,2383 @@ const setLocal = <T>(key: string, value: T): void => {
 // Initial Mock Seed Data
 const initMockData = () => {
   if (!localStorage.getItem('gyden2_initialized')) {
-    // 1. Listings Staging (LISTING_NEW)
-    setLocal('listings_new', [
-      {
-        id: 'stg-01',
-        property_id: 'G-1001',
-        title: 'Cyberjaya Smarthome Condominium',
-        address: 'Cyberjaya Block C, Level 15',
-        price_requested: 550000,
-        owner_name: 'Dr. Evelyn Shaw',
-        owner_contact: '+6012-345-6789',
-        photos: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80'],
-        salesperson_id: 'usr-sales-sarah',
-        salesperson_name: 'Sarah Connor (Sales Team)',
-        is_checklist_passed: true,
-        verification_status: 'pending',
-        raw_wa_template: 'WTS condo Cyberjaya. Asking price RM550k.',
-        market_rating: 'A',
-        sale_rent: 'sale',
-        state: 'Selangor',
-        property_type: 'Condominium',
-        rooms_remarks: '3R 2B, High Floor',
-        unit_no: 'C-15-04',
-        size: '1,050 sqft',
-        gdrive_link: 'https://drive.google.com/drive/folders/mock1',
-        final_wa_template: 'WTS Bangsar horizontally aligned copy here.',
-        private_notes: 'Owner is very urgent to sell.',
-        created_at: new Date(Date.now() - 3600000 * 24).toISOString()
-      },
-      {
-        id: 'stg-02',
-        property_id: 'G-1002',
-        title: 'Mont Kiara Glass Skyvilla',
-        address: 'Villa Heights, Block B-04',
-        price_requested: 1200000,
-        owner_name: 'Arthur Pendelton',
-        owner_contact: '+6011-9988-7766',
-        photos: ['https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80'],
-        salesperson_id: 'usr-sales-sarah',
-        salesperson_name: 'Sarah Connor (Sales Team)',
-        is_checklist_passed: false, // Missing owner documentation check
-        verification_status: 'pending',
-        raw_wa_template: '',
-        market_rating: 'B',
-        sale_rent: 'sale',
-        state: 'Kuala Lumpur',
-        property_type: 'Condominium',
-        rooms_remarks: '4R 4B',
-        unit_no: 'B-04-12',
-        size: '2,200 sqft',
-        gdrive_link: '',
-        final_wa_template: '',
-        private_notes: 'Wants to upgrade to bungalow.',
-        created_at: new Date().toISOString()
-      }
-    ]);
+    // 1. Listings Staging (LISTING_NEW) - Starts empty
+    setLocal('listings_new', []);
 
-    // 2. Master listings (MASTER)
+    // 2. Master listings (MASTER) - SA001 to SA030 from Excel
     setLocal('master_listings', [
-      {
-        id: 'mst-01',
-        property_id: 'G-9001',
-        title: 'Bangsar Horizon Luxury Penthouse',
-        address: 'Jalan Bangsar Utama, Residences Peak 1',
-        price: 2400000,
-        status: 'active',
-        photos: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80'],
-        salesperson_id: 'usr-sales-sarah',
-        salesperson_name: 'Sarah Connor (Sales Team)',
+{
+        id: 'mst-sa001',
+        property_id: `SA001`,
+        title: `PRIMA REGENCY`,
+        address: `PRIMA REGENCY`,
+        price: 268000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
         verified_by: 'usr-melissa',
-        owner_name: 'Dato Jimmy',
-        owner_contact: '+6019-222-3333',
-        raw_wa_template: 'Horizon penthouse Bangsar.',
-        market_rating: 'A+',
-        sale_rent: 'sale',
-        state: 'Kuala Lumpur',
-        property_type: 'Penthouse',
-        rooms_remarks: '5R 6B, private pool',
-        unit_no: 'Peak-35-01',
-        size: '4,500 sqft',
-        gdrive_link: 'https://drive.google.com/drive/folders/mock2',
-        final_wa_template: 'Horizon WTS Bangsar compile.',
-        private_notes: 'Fully furnished, viewing key with Melissa.',
-        created_at: new Date(Date.now() - 3600000 * 48).toISOString()
+        owner_name: `R029`,
+        owner_contact: ``,
+        raw_wa_template: `For Sales SA001
+Prima Regency
+Google Map: https://maps.app.goo.gl/bG7MhFZRNHqK3yiq6
+Property Type: Service Apartment
+Selling Price: RM268,000
+Bank Value: RMTBC
+Build Up Area: 565sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Tenanted
+Rental Income: RM1100
+Tenancy Expired: TBC
+Apartment Listing
+Studio 1 Bathroom
+Floor: Low
+Pool View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RM187.08+
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1PTjSwcaEpnQzLDkBRwwzrmQQ_-6A1cqj
+Can direct forward this message to customer`,
+        market_rating: `G - NOT AVAILABLE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `STUDIO`,
+        unit_no: `BLK 5 12-03`,
+        size: `565SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1PTjSwcaEpnQzLDkBRwwzrmQQ_-6A1cqj`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
       },
       {
-        id: 'mst-02',
-        property_id: 'G-9002',
-        title: 'KLCC Twin Towers Executive Suite',
-        address: 'KLCC Avenue, Tower 3, Level 50',
-        price: 3200000,
-        status: 'active',
-        photos: ['https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80'],
-        salesperson_id: 'usr-sales-sarah',
-        salesperson_name: 'Sarah Connor (Sales Team)',
+        id: 'mst-sa002',
+        property_id: `SA002`,
+        title: `KSL DAYA RESIDENCES`,
+        address: `KSL DAYA RESIDENCES`,
+        price: 421000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
         verified_by: 'usr-melissa',
-        owner_name: 'Madam Lee',
-        owner_contact: '+6012-777-8888',
-        raw_wa_template: 'KLCC level 50 executive WTS.',
-        market_rating: 'A',
-        sale_rent: 'sale',
-        state: 'Kuala Lumpur',
-        property_type: 'Serviced Residence',
-        rooms_remarks: '2R 2B, twin towers view',
-        unit_no: 'T3-50-08',
-        size: '1,200 sqft',
-        gdrive_link: 'https://drive.google.com/drive/folders/mock3',
-        final_wa_template: 'KLCC final draft WA copy.',
-        private_notes: 'Tenanted until Dec 2026.',
-        created_at: new Date(Date.now() - 3600000 * 72).toISOString()
+        owner_name: `ZHANG SHUQI`,
+        owner_contact: `+62 813-6475-4887`,
+        raw_wa_template: `For Sales SA002
+KSL Daya Residences
+Google Map: https://maps.app.goo.gl/6o6HfvCKM6mCghEDA
+Property Type: Service Apartment
+Selling Price: RM421,000
+Bank Value: RM540,000
+Build Up Area: 1097SQFT
+
+Sub-Sales
+Freehold
+International Lot
+Master Title
+Vacant
+
+Apartment Listing
+3 Bedroom 3 Bathroom
+Floor: High
+City View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RM TBC
+Remark
+1.The owner has two units: one in Block A and one in Block C.
+2.This unit is in Block A.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/15P8DaCU5giZ5DjtLRFZBZhbzUzRUlw1i
+Can direct forward this message to customer`,
+        market_rating: `G - NOT AVAILABLE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM`,
+        unit_no: `A 22-10`,
+        size: `1097SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/15P8DaCU5giZ5DjtLRFZBZhbzUzRUlw1i`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa003',
+        property_id: `SA003`,
+        title: `MEDINI SIGNATURE`,
+        address: `MEDINI SIGNATURE`,
+        price: 950000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
+        verified_by: 'usr-melissa',
+        owner_name: `L374`,
+        owner_contact: ``,
+        raw_wa_template: `For Sales SA003
+Medini Signature
+Google maps: https://maps.app.goo.gl/sHMkNQofh2vWJ1L28?g_st=ipc
+Property Type: Service Apartment
+Selling Price: RM 950,000
+Bank Value: RM 950,000
+Build Up Area: 1600sqft
+Sub-Sales
+Private lease
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+3+1 Bedroom 5 Bathroom
+Floor: high
+City View
+Partial Furnished
+Free parking
+Maintenance Fee: RM528/month
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1yhs3wWgtVxcDX70c54Zi7fXGfefMAmeO
+Can direct forward this message to customer`,
+        market_rating: `D - UNKNOWN MARKET`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM, +1ROOM`,
+        unit_no: `T1-25-W1`,
+        size: `1600SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1yhs3wWgtVxcDX70c54Zi7fXGfefMAmeO`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa004',
+        property_id: `SA004`,
+        title: `SOUTHERN MARINA`,
+        address: `SOUTHERN MARINA`,
+        price: 899000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
+        verified_by: 'usr-melissa',
+        owner_name: `L363`,
+        owner_contact: `017-7945668`,
+        raw_wa_template: `For Sales SA004
+Southern Marina
+Google Map: https://maps.app.goo.gl/36TeMrgjH7fKbdLs5
+Property Type: Service Apartment
+Selling Price: RM899,000
+Bank Value: RMTBC
+Build Up Area: 840sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+1+1 Bedroom 1 Bathroom
+Floor: High
+City View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1gQHq0L5kYGDTeCSPW3h-GTEpuDBIehbb
+Can direct forward this message to customer`,
+        market_rating: `D - UNKNOWN MARKET`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `1ROOM, +1ROOM`,
+        unit_no: `18-XX`,
+        size: `840SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1gQHq0L5kYGDTeCSPW3h-GTEpuDBIehbb`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa005',
+        property_id: `SA005`,
+        title: `TEBRAU CITY RESIDENCES, JALAN HARMONIUM 24/2`,
+        address: `TEBRAU CITY RESIDENCES, JALAN HARMONIUM 24/2`,
+        price: 498000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `CAVEN`,
+        owner_contact: `127999288.0`,
+        raw_wa_template: `For Sales SA005
+Tebrau City Residences
+Google Map: https://maps.app.goo.gl/KcafTHJmD2FRVXqE8
+Property Type: Apartment
+Selling Price: RM 498,000
+Bank Value: RM550K
+Build Up Area: 1404 SQFT
+Sub-Sales
+Freehold
+International
+Strata Title
+Tenanted
+Rental Income: RM1300
+Tenancy Expired: Tenancy Expired
+Apartment Listing
+3+1 Bedroom 2 Bathroom
+Floor: Low
+unblock View
+Fully Furnished
+1 Carparks
+Maintenance Fee: TBC
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1fn7YHDctRGjhMTS7kWIf3qjU0Ygo2TOz
+Can direct forward this message to customer`,
+        market_rating: `A - BELOW MARKET`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM, +1ROOM`,
+        unit_no: `E 05-21`,
+        size: `1404SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1fn7YHDctRGjhMTS7kWIf3qjU0Ygo2TOz`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa006',
+        property_id: `SA006`,
+        title: `SAKURA RESIDENCE`,
+        address: `SAKURA RESIDENCE`,
+        price: 2900000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-jacqueen`,
+        salesperson_name: `Jacqueen`,
+        verified_by: 'usr-melissa',
+        owner_name: `NATHAN TAN`,
+        owner_contact: `+659386 9142`,
+        raw_wa_template: `For Sales SA006
+Sakura Residence
+Google Map: https://maps.app.goo.gl/4a1u826RvFsemCf19
+Property Type:  2 storey Semi D
+Selling Price: RM 2,9mil
+Bank Value: TBC
+Build Up Area: 3,284 sq ft
+Land Size & Area: 2,925 sq ft (39 ft x 75 ft)
+Sub-Sales
+Leasehold (Convertible to freehold)
+International
+Non Bumi Lot
+Strata Title
+Vacant
+House Listing
+5+1 Bedroom 5 Bathroom
+Partial Furnished
+Renovated Unit
+Gated & Guarded: Yes
+Maintenance Fee & Sinking Fund: RM 466.07
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1n2ArMQqAF5G_SrVb0j91MYNsv-z7cI7u
+Can direct forward this message to customer`,
+        market_rating: `B - AT MARKET PRICE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- SEMI-DETACHED HOUSE`,
+        rooms_remarks: `2STOREY `,
+        unit_no: `54`,
+        size: `39X75SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1n2ArMQqAF5G_SrVb0j91MYNsv-z7cI7u`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa007',
+        property_id: `SA007`,
+        title: `JALAN GLASIAR, TAMAN TASEK `,
+        address: `JALAN GLASIAR, TAMAN TASEK `,
+        price: 1610000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Sarah Connor (Sales Team)`,
+        verified_by: 'usr-melissa',
+        owner_name: `SAM CHAN`,
+        owner_contact: `132007755.0`,
+        raw_wa_template: `For Sales SA007
+Jalan Glasiar, Taman Tasek
+Google Map: https://maps.app.goo.gl/dT8V7PNVWuSRBDyA8
+Property Type: 2 Storey Shop Lot
+Selling Price: RM 1,61 Mil
+Bank Value:  TBC
+Build Up Area: 3080SQFT
+Land Size & Area: 22x70
+Sub-Sales
+Freehold
+Non Bumi Lot
+Individual title
+Tenanted
+Rental Income: RM 6,300
+Tenancy Expired: June 2027
+Shoplot Listing
+Main Road
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1woc-JcvK47XhrkMyu6qgoMJ3VN-rnzlu
+Can direct forward this message to customer`,
+        market_rating: `C - OVERPRICED`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `C- SHOPLOT / RETAIL`,
+        rooms_remarks: `2STOREY, SHOPLOT, MAIN ROAD`,
+        unit_no: `175`,
+        size: `3080SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1woc-JcvK47XhrkMyu6qgoMJ3VN-rnzlu`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa008',
+        property_id: `SA008`,
+        title: `COUNTRY GARDEN DANGA BAY@AMBERSIDE`,
+        address: `COUNTRY GARDEN DANGA BAY@AMBERSIDE`,
+        price: 498000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `JACKSON`,
+        owner_contact: `+60 14-386 5939`,
+        raw_wa_template: `For Sales SA008
+Country Garden Danga Bay@Amberside
+Google Map: https://maps.app.goo.gl/a9Qo9b9USqttUjrM7
+Property Type: Service Apartment
+Selling Price: RM498,000
+Bank Value: RMTBC
+Build Up Area: 840sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+2 Bedroom 2 Bathroom
+Floor: Low
+City View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+Remark
+1.Cannot Do Advertisement at iProperty & PropertyGuru & Facebook, Developer Will Complaint.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1sXgtgZuStRst9V4sxNwRvCNkYjZtEgT0
+Can direct forward this message to customer`,
+        market_rating: `G - NOT AVAILABLE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `2ROOM`,
+        unit_no: `8A 05-05`,
+        size: `840SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1sXgtgZuStRst9V4sxNwRvCNkYjZtEgT0`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa009',
+        property_id: `SA009`,
+        title: `COUNTRY GARDEN DANGA BAY@BAY POINT`,
+        address: `COUNTRY GARDEN DANGA BAY@BAY POINT`,
+        price: 498000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `JACKSON`,
+        owner_contact: `+60 14-386 5939`,
+        raw_wa_template: `For Sales SA009
+Country Garden Danga Bay@Bay Point
+Google Map: https://maps.app.goo.gl/fydzEvCpCPTAhbDEA
+Property Type: Service Apartment
+Selling Price: RM498,000
+Bank Value: RMTBC
+Build Up Area: 800sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+2 Bedroom 2 Bathroom
+Floor: Low
+Residence View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+Remark
+1.Cannot Do Advertisement at iProperty & PropertyGuru & Facebook, Developer Will Complaint.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1SA094NjJq9jG8Ko1tSeT3Bymu7g4hnxI
+Can direct forward this message to customer`,
+        market_rating: `A+ SUPER HOT DEAL`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `2ROOM`,
+        unit_no: `4A 17-03`,
+        size: `800SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1SA094NjJq9jG8Ko1tSeT3Bymu7g4hnxI`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa010',
+        property_id: `SA010`,
+        title: `COUNTRY GARDEN DANGA BAY@BAY POINT`,
+        address: `COUNTRY GARDEN DANGA BAY@BAY POINT`,
+        price: 490000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `JACKSON`,
+        owner_contact: `+60 14-386 5939`,
+        raw_wa_template: `For Sales SA010
+Country Garden Danga Bay@Bay Point
+Google Map: https://maps.app.goo.gl/fRQamF8vgHqeYwrk6
+Property Type: Service Apartment
+Selling Price: RM500k
+Bank Value: RMTBC
+Build Up Area: 893sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+2 Bedroom 2 Bathroom
+Floor: High
+Residential View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+Remark
+1.Call full loan or cash buy
+2.Cannot Do Advertisement at iProperty & PropertyGuru & Facebook, Developer Will Complaint.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1rUXhJefaIQdyK9ZoCNW6ra3IGAayAbPT
+Can direct forward this message to customer`,
+        market_rating: `G - CASE COMPLETED`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `2ROOM`,
+        unit_no: `5A 20-01`,
+        size: `893SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1rUXhJefaIQdyK9ZoCNW6ra3IGAayAbPT`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa011',
+        property_id: `SA011`,
+        title: `JALAN KEPAYANG, TAMAN KOTA JAYA`,
+        address: `JALAN KEPAYANG, TAMAN KOTA JAYA`,
+        price: 448000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `WILSON LEE`,
+        owner_contact: `177553933.0`,
+        raw_wa_template: `For Sales SA011
+Jalan Kepayang, Taman Kota Jaya
+Google Map: https://maps.app.goo.gl/oyfaGVhwynU7sYQXA
+Property Type: 1 Storey Terrace House
+Selling Price: RM448,000
+Bank Value: RMTBC
+Build Up Area: 1600++sqft
+Land Size & Area: 2615sqft
+Sub-Sales
+Freehold
+International Lot
+Individual Title
+Vacant
+House Listing
+3+1 Bedroom 2 Bathroom
+Partial Furnished
+Original
+South West Direction
+Gated & Guarded: No
+Remark
+1.Can park more than 5 cars
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1vySfurTXC19YULe_SEhrCIxDvKLzkvOG
+Can direct forward this message to customer`,
+        market_rating: `B - AT MARKET PRICE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- TERRACE HOUSE`,
+        rooms_remarks: `1STOREY `,
+        unit_no: `104`,
+        size: `1600SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1vySfurTXC19YULe_SEhrCIxDvKLzkvOG`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa012',
+        property_id: `SA012`,
+        title: `GREEN HAVEN`,
+        address: `GREEN HAVEN`,
+        price: 588000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `DYLAN`,
+        owner_contact: `167153666.0`,
+        raw_wa_template: `For Sales SA012
+Green Haven
+Google Map: https://maps.app.goo.gl/v39GB1azC41E6PSy9
+Property Type: Condominium
+Selling Price: RM588,000
+Bank Value: RM650,000
+Build Up Area: 1149sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+Dual Key Unit
+Studio 1 Bathroom
+Floor: High
+TBC View
+Partial Furnished
+2 Carparks
+Maintenance Fee: RMTBC
+Remark
+1.Photos for reference only.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1ijF39ma6wGHf1plsA6lF7N0R_TJQJSK4
+Can direct forward this message to customer`,
+        market_rating: `B - AT MARKET PRICE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `STUDIO / STUDIO, DUAL KEY`,
+        unit_no: `C 27-06`,
+        size: `1149SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1ijF39ma6wGHf1plsA6lF7N0R_TJQJSK4`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa013',
+        property_id: `SA013`,
+        title: `JALAN DATO JAAFAR 24, TAMAN MUTIARA DESARU`,
+        address: `JALAN DATO JAAFAR 24, TAMAN MUTIARA DESARU`,
+        price: 350000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `MR.GOOI`,
+        owner_contact: `+60 12-777 1666`,
+        raw_wa_template: `For Sales SA013
+Jalan Dato Jaafar 24, Taman Mutiara Desaru
+Google Map: https://maps.app.goo.gl/LmpC9mbLk6KmNQD48
+Property Type: 1 Storey Shoplot (Endlot)
+Selling Price: RM350,000
+Bank Value: RMTBC
+Build Up Area: 1400sqft
+Land Size & Area: 20x70
+Sub-Sales
+Leasehold
+International Lot
+Individual Title
+Tenanted
+Rental Income: RM1700
+Tenancy Expired: TBC
+Shoplot Listing
+Main Road
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1JUqrwTVt0uOtdCvx0LimydvrVCKmv2ND
+Can direct forward this message to customer`,
+        market_rating: `E - LISTING ON HOLD`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `C- SHOPLOT / RETAIL`,
+        rooms_remarks: `1STOREY, SHOPLOT, ENDLOT, MAIN ROAD`,
+        unit_no: `49`,
+        size: `1400SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1JUqrwTVt0uOtdCvx0LimydvrVCKmv2ND`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa014',
+        property_id: `SA014`,
+        title: `SUNGAI SULOH BESAR, MUKIM MINYAK BEKU, SENGGARANG`,
+        address: `SUNGAI SULOH BESAR, MUKIM MINYAK BEKU, SENGGARANG`,
+        price: 3200000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `AH LUN`,
+        owner_contact: `+60 16-753 5919`,
+        raw_wa_template: `For Sales SA014
+Sungai Suloh Besar, Mukim Minyak Beku, Senggarang
+Google Map: https://maps.app.goo.gl/1yFQ55m2jBQy9JMDA
+Property Type: Agriculture Land
+Selling Price: RM3,200,000 nego
+Bank Value: RMTBC
+Land Size & Area: 16 acres
+Sub-Sales
+Freehold
+International Lot
+Individual Title
+Vacant
+Land Listing
+Main Road
+Layer: First
+Land Type: TBC
+Electricity Supply: TBC
+Water Supply: TBC
+Monthly Profit: RMTBC
+7 Year Tree
+Geran: 2 pcs
+Remark
+1.Monthly yield of Kelicap coconuts is around 10,000 to 14,000 nuts.
+2.RM200k per acre
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/12sYjoUd2k6Tb5Ih-pnOKx5Gu45BAIvT4
+Can direct forward this message to customer`,
+        market_rating: `A - BELOW MARKET`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `A- AGRICULTURAL LAND`,
+        rooms_remarks: `AGRICULTURAL LAND`,
+        unit_no: `LOT 1072&1085`,
+        size: `16ACRES`,
+        gdrive_link: `https://drive.google.com/drive/folders/12sYjoUd2k6Tb5Ih-pnOKx5Gu45BAIvT4`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa015',
+        property_id: `SA015`,
+        title: `PARADIGM RESIDENCE`,
+        address: `PARADIGM RESIDENCE`,
+        price: 780000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
+        verified_by: 'usr-melissa',
+        owner_name: `L314`,
+        owner_contact: ``,
+        raw_wa_template: `For Sales SA015
+Paradigm Residence
+Google Map: https://maps.app.goo.gl/urQQwaA7jmchZU4w8
+Property Type: Service Apartment
+Selling Price: RM780,000
+Bank Value: RMTBC
+Build Up Area: 962sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Owner Own Stay
+Apartment Listing
+2+1 Bedroom 2 Bathroom
+Floor: High
+City View
+West Sun
+Fully Furnished
+1 Carparks
+Maintenance Fee: RM TBC
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1dFwutMaerEPfQvQTIZO-5wiFk7IKegEK
+Can direct forward this message to customer`,
+        market_rating: `C - OVERPRICED`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `2ROOM, +1ROOM`,
+        unit_no: `25-XX`,
+        size: `962SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1dFwutMaerEPfQvQTIZO-5wiFk7IKegEK`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa016',
+        property_id: `SA016`,
+        title: `MEDINI SIGNATURE`,
+        address: `MEDINI SIGNATURE`,
+        price: 750000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
+        verified_by: 'usr-melissa',
+        owner_name: `L362`,
+        owner_contact: ``,
+        raw_wa_template: `For Sales SA016
+Medini Signature
+Google Map: https://maps.app.goo.gl/cgst9UrfhKGUUqKb7
+Property Type: Service Apartment
+Selling Price: RM750,000
+Bank Value: RMTBC
+Build Up Area: 1395sqft
+Sub-Sales
+Private Lease
+International Lot
+Strata Title
+Airbnb now
+Apartment Listing
+5 Bedroom 4 Bathroom
+Floor: Middle
+City View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RM560.35
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1bAKYmqLgsimQr7mMyCEVkUT0-ri8V65t
+Can direct forward this message to customer`,
+        market_rating: `D - UNKNOWN MARKET`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `5ROOM`,
+        unit_no: `T2-15-W3`,
+        size: `1395SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1bAKYmqLgsimQr7mMyCEVkUT0-ri8V65t`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa017',
+        property_id: `SA017`,
+        title: `JALAN KENANGA 29/11, KULAI`,
+        address: `JALAN KENANGA 29/11, KULAI`,
+        price: 1350000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `SHAUN LOW`,
+        owner_contact: `+60197723689`,
+        raw_wa_template: `For Sales SA017
+Jalan Kenanga 29/11,Kulai
+Google Map: https://maps.app.goo.gl/mLQzqZr6eACNR45c8
+Property Type: 4 Storey ShopLot
+Selling Price: RM1.35mil
+Bank Value: RMTBC
+Build Up Area: 1680 Sqft
+Land Size & Area: 24 x 70
+Sub-Sales
+Freehold
+International Lot
+Individual Title
+Tenanted
+Shoplot Listing
+Inner Road
+Remark: Only 2nd Floor Available from October 2025 to rent
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1tdQgiktbHTxFCupll5yip7Ydn7yWcIcJ
+Can direct forward this message to customer`,
+        market_rating: `B - AT MARKET PRICE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `C- SHOPLOT / RETAIL`,
+        rooms_remarks: `4STOREY, SHOPLOT, INNER ROAD`,
+        unit_no: `442`,
+        size: `1680SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1tdQgiktbHTxFCupll5yip7Ydn7yWcIcJ`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa018',
+        property_id: `SA018`,
+        title: `JALAN KENANGA 29/11, KULAI`,
+        address: `JALAN KENANGA 29/11, KULAI`,
+        price: 1350000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `SHAUN LOW`,
+        owner_contact: `+60197723689`,
+        raw_wa_template: `*For Sales SA018*
+*Jalan Kenanga 29/11,Kulai*
+Google Map: https://maps.app.goo.gl/mLQzqZr6eACNR45c8
+Property Type: 4 Storey ShopLot
+Selling Price: RM1.35mil
+Bank Value: RMTBC
+Build Up Area: 1680 Sqft
+Land Size & Area: 24 x 70
+Sub-Sales
+Freehold
+International Lot
+Individual Title
+Shoplot Listing
+Inner Road
+Remark: Only Ground Floor Occupied for rent.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/11D9xxd718XUA3_isJ1WloDTdzF906EPE
+Can direct forward this message to customer`,
+        market_rating: `B - AT MARKET PRICE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `C- SHOPLOT / RETAIL`,
+        rooms_remarks: `4STOREY, SHOPLOT, INNER ROAD`,
+        unit_no: `443`,
+        size: `1680SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/11D9xxd718XUA3_isJ1WloDTdzF906EPE`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa019',
+        property_id: `SA019`,
+        title: `JALAN KENANGA 29/11, KULAI`,
+        address: `JALAN KENANGA 29/11, KULAI`,
+        price: 2700000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `SHAUN LOW`,
+        owner_contact: `+60197723689`,
+        raw_wa_template: `For Sales SA019
+Jalan Kenanga 29/11,Kulai
+Google Map: https://maps.app.goo.gl/mLQzqZr6eACNR45c8
+Property Type: 2 Adjoining 4 Storey ShopLot
+Selling Price: RM 2.7mil
+Bank Value: RMTBC
+Build Up Area: 1680 Sqft x2
+Land Size & Area: 24x70 x2
+Sub-Sales
+Freehold
+International Lot
+Individual Title
+Shoplot Listing
+Inner Road
+2 Adjoining Whole Block
+Remark: Only Ground Floor Occupied for rent.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/12HtRh15f80tnV2olWw_NWmfEzLbuhvht
+Can direct forward this message to customer`,
+        market_rating: `B - AT MARKET PRICE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `C- SHOPLOT / RETAIL`,
+        rooms_remarks: `2 ADJOINING, 4STOREY, SHOPLOT, INNER ROAD`,
+        unit_no: `442 - 443`,
+        size: `1680SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/12HtRh15f80tnV2olWw_NWmfEzLbuhvht`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa020',
+        property_id: `SA020`,
+        title: `MIDORI GREEN`,
+        address: `MIDORI GREEN`,
+        price: 499500,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `JEFFERY`,
+        owner_contact: `+60 19-775 8055`,
+        raw_wa_template: `For Sales SA020
+Midori Green
+Google Map: https://maps.app.goo.gl/w9iuQoUwyWK5yeG6A
+Property Type: Service Apartment
+Selling Price: RM499,500
+Bank Value: RMTBC
+Build Up Area: 1030sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Homestay now
+Apartment Listing
+3 Bedroom 2 Bathroom
+Floor: Low
+Pool View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+Remark
+1.All renovations, electrical fittings, and furniture are brand new.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1H1JrebJXBkyLBhELJjh8PeJCOPtxQWLf
+Can direct forward this message to customer`,
+        market_rating: `C - OVERPRICED`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM`,
+        unit_no: `B2 08-20`,
+        size: `1030SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1H1JrebJXBkyLBhELJjh8PeJCOPtxQWLf`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa021',
+        property_id: `SA021`,
+        title: `RNF PRINCESS COVE PHASE 1`,
+        address: `RNF PRINCESS COVE PHASE 1`,
+        price: 1000300,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `LAHOME:
+BENSON `,
+        owner_contact: ``,
+        raw_wa_template: `For Sales SA021
+RNF Princess Phase 1
+Google Map: https://maps.app.goo.gl/kifayXdsPd1VHePU9
+Property Type: Service Apartment
+Selling Price: RM 1,000,300
+Bank Value:  RM 1,050,00
+Build Up Area: 1,129 SQFT
+Sub-Sales
+Freehold
+Non Bumi Lot
+Master Title
+Tenanted
+Rental Income: RM3400(Not Included Carpark)
+Tenancy Expired: 15/12/2026
+Apartment Listing
+3 Bedroom 2 Bathroom
+Floor: Middle
+Sea View
+Fully Furnished
+1 Carparks
+Maintenance Fee + Sinking Fund:  RM330 + RM33
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/19zTSOkrVmoR20OGNO9hJpH5yOXepxdoJ
+Can direct forward this message to customer`,
+        market_rating: `G - CASE COMPLETED`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM`,
+        unit_no: `A5-2-1701`,
+        size: `1129SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/19zTSOkrVmoR20OGNO9hJpH5yOXepxdoJ`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa022',
+        property_id: `SA022`,
+        title: `PARAGON RESIDENCE`,
+        address: `PARAGON RESIDENCE`,
+        price: 850000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
+        verified_by: 'usr-melissa',
+        owner_name: `Y049`,
+        owner_contact: `017-4353055`,
+        raw_wa_template: `For Sales SA022
+Paragon Residence
+Google Map: https://maps.app.goo.gl/W7FzK4EM78mCKcKe7
+Property Type: Service Apartment
+Selling Price: RM850,000
+Bank Value: RMTBC
+Build Up Area: 1044sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+3 Bedroom 2 Bathroom
+Floor: High
+Sea View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1KuFUmM0SVdgEbizQzmrN1kMUUSDq7NKc
+Can direct forward this message to customer`,
+        market_rating: `D - UNKNOWN MARKET`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM`,
+        unit_no: `A 25-08`,
+        size: `1044SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1KuFUmM0SVdgEbizQzmrN1kMUUSDq7NKc`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa023',
+        property_id: `SA023`,
+        title: `D' AMBIENCE RESIDENCES`,
+        address: `D' AMBIENCE RESIDENCES`,
+        price: 438000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Sarah Connor (Sales Team)`,
+        verified_by: 'usr-melissa',
+        owner_name: `LISLIE`,
+        owner_contact: ``,
+        raw_wa_template: `For Sales SA023
+D' Ambience Residences
+Google Map: https://maps.app.goo.gl/ytro8c6N2BMxqSyN8
+Property Type: Apartment
+Selling Price: RM438,000
+Bank Value: RM 500,000
+Build Up Area: 1,114 SQFT
+Sub-Sales
+Freehold
+International
+Strata Title
+Vacant
+Apartment Listing
+3 Bedroom 2 Bathroom
+Floor: Low
+Garden View
+Fully Furnished
+2 Carparks
+Maintenance Fee: RM350
+Remark :
+1. Full Loan
+2. Corner Lot
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1eOs51aBjUp0L89TDF8MMBPnu6KtarjSV
+Can direct forward this message to customer`,
+        market_rating: `G - CASE COMPLETED`,
+        sale_rent: `sale - coagency`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM, CORNER LOT`,
+        unit_no: `B 05-01`,
+        size: `1114 SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1eOs51aBjUp0L89TDF8MMBPnu6KtarjSV`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa024',
+        property_id: `SA024`,
+        title: `CUBE 166, JP PERDANA, JALAN JAYA PUTRA 3/2`,
+        address: `CUBE 166, JP PERDANA, JALAN JAYA PUTRA 3/2`,
+        price: 680000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Sarah Connor (Sales Team)`,
+        verified_by: 'usr-melissa',
+        owner_name: `EDWARD`,
+        owner_contact: `165166214.0`,
+        raw_wa_template: `For Sales SA024
+CUBE 166 JP PERDANA
+Google Map: https://maps.app.goo.gl/u92Xuj5qQFTk9N9s8
+Property Type: 2 Storey Terrace House
+Selling Price: RM680,000
+Bank Value: RM 700,000
+Build Up Area: 1588 sqft
+Land Size & Area: 18 x 65
+Sub-Sales
+Freehold
+International
+Individual
+Vacant
+House Listing
+4 Bedroom 3 Bathroom
+Unfurnished
+Original unit
+Gated & Guarded: Yes
+Maintenance Fee: RM 120
+Remark
+1. Direction: North
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1Y5qvtjWXNooZTFlf9uOxvUQRMWDq31dR
+Can direct forward this message to customer`,
+        market_rating: `G - CASE COMPLETED`,
+        sale_rent: `sale - coagency`,
+        state: `JOHOR`,
+        property_type: `R- TERRACE HOUSE`,
+        rooms_remarks: `2STOREY `,
+        unit_no: `01-19`,
+        size: `18X65SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1Y5qvtjWXNooZTFlf9uOxvUQRMWDq31dR`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa025',
+        property_id: `SA025`,
+        title: `WAVE MARINA COVE`,
+        address: `WAVE MARINA COVE`,
+        price: 420000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `BONG MY `,
+        owner_contact: `+60168969629`,
+        raw_wa_template: `For Sales SA025
+WAVE MARINA COVE
+Google Map: https://maps.app.goo.gl/yMKjmQo2Ugcqjz898
+Property Type: Service Apartment
+Selling Price: RM 420,000
+Bank Value: TBC
+Build Up Area: 526 sqft
+Sub-Sales
+Freehold
+International
+Strata Title
+Tenanted
+Rental Income: RM 1900
+Tenancy Expired: Jan 2026
+Apartment Listing
+1Bedroom 1Bathroom
+Floor: High
+Sea View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RM 181.50
+Remark:
+1. The living room has floor-to-ceiling windows.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1mXPhC0J3GLpEbyEzNRXlzNMLEbFtGoys
+Can direct forward this message to customer`,
+        market_rating: `C - OVERPRICED`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `1ROOM`,
+        unit_no: `D 28-04`,
+        size: `526SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1mXPhC0J3GLpEbyEzNRXlzNMLEbFtGoys`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa026',
+        property_id: `SA026`,
+        title: `PANDAN RESIDENCE 2`,
+        address: `PANDAN RESIDENCE 2`,
+        price: 480000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `YOONSENG`,
+        owner_contact: `167587620.0`,
+        raw_wa_template: `For Sales SA026
+Pandan Residence 2
+Google Map:https://maps.app.goo.gl/hYESAGST6y8znvqGA
+Property Type: Service Apartment
+Selling Price: RM480,000
+Bank Value: RM650,000
+Build Up Area: 1405 sqft
+Sub-Sales
+Leasehold 99Years
+International Lot
+Strata Title
+Tenanted
+Rental Income: rm2000
+Tenancy Expired: Sep 2025
+Apartment Listing
+3+1 bedrooms 2 bathrooms
+Floor: High with skybridge connected
+City View
+Fully Furnished
+2 Carparks
+Maintenance Fee: RM 400++
+Remark:
+1.The owner has not completed the Perfection of Strata Title process.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1UcWmIvHaNodfN8klZ2XGjtCpmv3TKHnN
+Can direct forward this message to customer`,
+        market_rating: `G - NOT AVAILABLE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `3ROOM, +1ROOM`,
+        unit_no: `22-08`,
+        size: `1405SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1UcWmIvHaNodfN8klZ2XGjtCpmv3TKHnN`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa027',
+        property_id: `SA027`,
+        title: `COUNTRY GARDEN@CENTRAL PARK`,
+        address: `COUNTRY GARDEN@CENTRAL PARK`,
+        price: 250000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `JIA YIN`,
+        owner_contact: `+60 11-2676 4542`,
+        raw_wa_template: `For Sales SA027
+Country Garden@Central Park
+Google Map: https://maps.app.goo.gl/HEnrw95gBVFA4XQ48
+Property Type: Service Apartment
+Selling Price: RM250,000
+Bank Value: RMTBC
+Build Up Area: 403sqft
+Sub-Sales
+Freehold
+Non Bumi Lot
+Strata Title
+Tenanted
+Rental Income: RM1100
+Tenancy Expired: TBC
+Apartment Listing
+Studio 1 Bathroom
+Floor: Low
+City View
+Partial Furnished
+1 Carparks
+Maintenance Fee: RM 135
+Remark:
+1.MOT pending — to be completed concurrently with the sale transaction.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1GSJKDfLv_NpOiPtY3VY2WFHL0W8-lnCS
+Can direct forward this message to customer`,
+        market_rating: `G - NOT AVAILABLE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `STUDIO`,
+        unit_no: `B-13-12`,
+        size: `403SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1GSJKDfLv_NpOiPtY3VY2WFHL0W8-lnCS`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa028',
+        property_id: `SA028`,
+        title: `JALAN PERMAS 15/1, BANDAR PERMAS JAYA`,
+        address: `JALAN PERMAS 15/1, BANDAR PERMAS JAYA`,
+        price: 1750000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-sales-sarah`,
+        salesperson_name: `Gyden`,
+        verified_by: 'usr-melissa',
+        owner_name: `RYAN ANG`,
+        owner_contact: `167798666.0`,
+        raw_wa_template: `For Sales SA028
+Jalan Permas 15/1,Bandar Permas Jaya
+Google Map: https://maps.app.goo.gl/QuMnUYAKbL8Ny2Ts6
+Property Type: 3 Storey Shop Office
+Selling Price: RM1.75mil
+Bank Value: RM1.8mil
+Build Up Area: 5040sqft
+Land Size & Area: 24x70
+Sub-Sales
+Freehold
+International Lot
+Individual Title
+Tenanted
+Shoplot Listing
+Main Road
+Ground Floor Rental: RM4000
+Tenancy Expired: 31 Dec 2026
+1st Floor Rental: RM1800
+Tenancy Expired: 30 Nov 2026
+2nd Floor Rental: RM1000
+Tenancy Expired: 30 Jun 2027
+Remark:
+1.Same row with Rozel & 7eleven
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/10yrQupVpowtVaFI0Gzt6qoF3c80C-7Nb
+Can direct forward this message to customer`,
+        market_rating: `G - CASE COMPLETED`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `C- SHOPLOT / RETAIL`,
+        rooms_remarks: `3STOREY, SHOP OFFICE, MAIN ROAD`,
+        unit_no: `10`,
+        size: `24X70SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/10yrQupVpowtVaFI0Gzt6qoF3c80C-7Nb`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa029',
+        property_id: `SA029`,
+        title: `ENCORP MARINA`,
+        address: `ENCORP MARINA`,
+        price: 400000,
+        status: `active`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
+        verified_by: 'usr-melissa',
+        owner_name: `Y103`,
+        owner_contact: `016-7118215`,
+        raw_wa_template: `For Sales SA029
+Encorp Marina
+Google Map: https://maps.app.goo.gl/S9K2vhpd3V2HgYtA8
+Property Type: Service Apartment
+Selling Price: RM400,000
+Bank Value: RMTBC
+Build Up Area: 716sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+Studio 1 Bathroom
+Floor: Mid
+Sea  View
+Unblock View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+Remark
+1.Brand new unit
+2.Photos for reference only.
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1EgBtGHgQiu6FNhA9a77OzgRgk5YKdmbj
+Can direct forward this message to customer`,
+        market_rating: `B - AT MARKET PRICE`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `STUDIO`,
+        unit_no: `T2-18-03`,
+        size: `716SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1EgBtGHgQiu6FNhA9a77OzgRgk5YKdmbj`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
+      },
+      {
+        id: 'mst-sa030',
+        property_id: `SA030`,
+        title: `ENCORP MARINA`,
+        address: `ENCORP MARINA`,
+        price: 450000,
+        status: `inactive`,
+        photos: [],
+        salesperson_id: `usr-intan`,
+        salesperson_name: `Mindy`,
+        verified_by: 'usr-melissa',
+        owner_name: `L205`,
+        owner_contact: `+60 16-442 1088`,
+        raw_wa_template: `For Sales SA030
+Encorp Marina
+Google Map: https://maps.app.goo.gl/S9K2vhpd3V2HgYtA8
+Property Type: Service Apartment
+Selling Price: RM450,000
+Bank Value: RMTBC
+Build Up Area: 749sqft
+Sub-Sales
+Freehold
+International Lot
+Strata Title
+Vacant
+Apartment Listing
+Studio 1 Bathroom
+Floor: High
+Sea  View
+Fully Furnished
+1 Carparks
+Maintenance Fee: RMTBC
+
+Unit Photo Inside This Link
+https://drive.google.com/drive/folders/1VighHYTaLcA3ikkas4UpUUUZBMQ7YcIZ
+Can direct forward this message to customer`,
+        market_rating: `E - LISTING ON HOLD`,
+        sale_rent: `sale`,
+        state: `JOHOR`,
+        property_type: `R- APT/ CONDO / SR / FLAT`,
+        rooms_remarks: `STUDIO`,
+        unit_no: `T2-30-XX`,
+        size: `749SQFT`,
+        gdrive_link: `https://drive.google.com/drive/folders/1VighHYTaLcA3ikkas4UpUUUZBMQ7YcIZ`,
+        final_wa_template: '',
+        private_notes: '',
+        created_at: `2026-04-01 00:00:00`
       }
     ]);
 
     // 3. Updates remarks (LISTING_UPDATE)
     setLocal('listing_updates', [
+{
+        id: 'upd-sa001',
+        property_id: `SA001`,
+        remarks: `SHARE 30% FOR INTRODUCER MR.GOOI`,
+        updated_by: `usr-intan`,
+        updated_by_name: `Mindy`,
+        updated_at: new Date().toISOString()
+      },
       {
-        id: 'upd-01',
-        property_id: 'G-9001',
-        remarks: 'Owner remarked that listing can accept a 5% negotiation window.',
-        updated_by: 'usr-sales-sarah',
-        updated_by_name: 'Sarah Connor',
-        updated_at: new Date(Date.now() - 3600000 * 12).toISOString()
+        id: 'upd-sa002',
+        property_id: `SA002`,
+        remarks: `29/08/2025还没处理MOT
+Under Master Title
+-owner take back 360k`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa003',
+        property_id: `SA003`,
+        remarks: `take back RM868k`,
+        updated_by: `usr-intan`,
+        updated_by_name: `Mindy`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa004',
+        property_id: `SA004`,
+        remarks: `ONLY except Investor Buyer`,
+        updated_by: `usr-intan`,
+        updated_by_name: `Mindy`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa005',
+        property_id: `SA005`,
+        remarks: `-Can mark up 430k-450k
+-Nett 380k
+
+-----------------------------
+⭕房源核心判断条件：
+1.是否为市场最低价或接近最低价2.佣金是否高于 2%
+3.该区域过去交易量是否活跃
+4.价格是否低于该区域过往2年的成交价`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa007',
+        property_id: `SA007`,
+        remarks: `⭕房源核心判断条件：
+1.该区域过去交易量是否活跃
+
+❌不达标条件-1.3mil per unit最低价`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Sarah Connor (Sales Team)`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa008',
+        property_id: `SA008`,
+        remarks: `CANNOT DO ADVERTISEMENT AT IPROPERTY & PROPERTYGURU & FACEBOOK, DEVELOPER WILL COMPLAINT.
+
+Owner take back 410k
+markup portion need to deduct 20% for CIM, balance 80% share by agent
+Use Vendor Agent lawyer`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa009',
+        property_id: `SA009`,
+        remarks: `CANNOT DO ADVERTISEMENT AT IPROPERTY & PROPERTYGURU & FACEBOOK, DEVELOPER WILL COMPLAINT.
+
+Owner take back 410k
+markup portion need to deduct 20% for CIM, balance 80% share by agent
+Use Vendor Agent lawyer`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa010',
+        property_id: `SA010`,
+        remarks: `CANNOT DO ADVERTISEMENT AT IPROPERTY & PROPERTYGURU & FACEBOOK, DEVELOPER WILL COMPLAINT
+
+Owner take back 430k
+markup portion need to deduct 20% for CIM, balance 80% share by agent
+Use Vendor Agent lawyer`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa011',
+        property_id: `SA011`,
+        remarks: `Owner will take 0.45% as referrals fee
+Owner take back RM428k nett
+
+-------------------------------
+⭕房源核心判断条件：
+1.价格是否低于该区域过往2年的成交价
+2.佣金是否高于 2%
+
+❌不达标条件-438k最低价 / 该区域过去交易量是否活跃(没有相关单位）`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa012',
+        property_id: `SA012`,
+        remarks: `1.Carpark No 1-120&1-121
+2.Photos for reference only.
+
+-------------------------------
+⭕房源核心判断条件：
+1.该区域过去交易量是否活跃
+2.是否为市场最低价或接近最低价`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa013',
+        property_id: `SA013`,
+        remarks: `Owner Reply ：27/2/26
+不好意思，我没有单位要出售`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa014',
+        property_id: `SA014`,
+        remarks: `RM200k per acre
+
+Owner referral take 0.45%
+Commission  2%-3%
+
+--------------------------
+⭕房源核心判断条件：
+1.是否为市场最低价或接近最低价
+2.该区域过去交易量是否活跃
+3.价格是否低于该区域过往2年的成交价`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa015',
+        property_id: `SA015`,
+        remarks: `SELL OTHER SUMMERPARK UNIT FIRST
+BANK VALUE 360K`,
+        updated_by: `usr-intan`,
+        updated_by_name: `Mindy`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa017',
+        property_id: `SA017`,
+        remarks: `⭕房源核心判断条件：
+1.该区域过去交易量是否活跃
+2.价格是否低于该区域过往2年的成交价
+
+❌不达标条件-1.18mil最低价`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa018',
+        property_id: `SA018`,
+        remarks: `⭕房源核心判断条件：
+1.该区域过去交易量是否活
+2.价格是否低于该区域过往2年的成交价
+
+❌不达标条件-1.18mil最低价`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa019',
+        property_id: `SA019`,
+        remarks: `⭕房源核心判断条件：
+1.该区域过去交易量是否活跃
+2.价格是否低于该区域过往2年的成交价
+
+❌不达标条件-1.18mil/per unit最低价`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa020',
+        property_id: `SA020`,
+        remarks: `RM450K nett
+---------------------------
+⭕房源核心判断条件：
+1.该区域过去交易量是否活跃`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa022',
+        property_id: `SA022`,
+        remarks: `Referral 0.5%`,
+        updated_by: `usr-intan`,
+        updated_by_name: `Mindy`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa023',
+        property_id: `SA023`,
+        remarks: `Open loan
+Allow murkup up loan 
+Bare owner legal fee
+
+Owner take back Rm 420k 
+Big commission 18k
+
+Commission：
+Exclusive unit investment lock 
+Open loan
+Owner take back Rm 420k 
+Selling price Rm 438k  
+Big commission 18k
+Bank value Rm500k 
+
+Use Vendor lawyer DGK`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Sarah Connor (Sales Team)`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa024',
+        property_id: `SA024`,
+        remarks: `Owner take back Rm 650k 
+Big commission 30k
+
+Open loan
+Allow murkup up loan , RBGT 15% 
+Bare owner legal fee`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Sarah Connor (Sales Team)`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa025',
+        property_id: `SA025`,
+        remarks: `Fully Furnished
+Contract end Jan 2026
+客厅是全落地玻璃.
+照片的单位是D-2904的照片.
+所以D2804 是全落地玻璃
+
+-------------------------------
+⭕房源核心判断条件：
+1.该区域过去交易量是否活跃`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa026',
+        property_id: `SA026`,
+        remarks: `Owner take back 441k`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa027',
+        property_id: `SA027`,
+        remarks: `MOT pending — to be completed concurrently with the sale transaction`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'upd-sa028',
+        property_id: `SA028`,
+        remarks: `2.5% Com`,
+        updated_by: `usr-sales-sarah`,
+        updated_by_name: `Gyden`,
+        updated_at: new Date().toISOString()
       }
     ]);
 
     // 4. Marketing ads (ADVERTISING)
     setLocal('advertising', [
-      {
-        id: 'adv-01',
-        property_id: 'G-9001',
-        title: 'Bangsar Horizon Luxury Penthouse',
-        selected_by_sales: true,
-        status: 'published',
-        iproperty_link: 'https://iproperty.com.my/property/G-9001-bangsar-residence',
-        propertyguru_link: 'https://propertyguru.com.my/listing/G-9001-bangsar',
+{
+        id: 'adv-sa001',
+        property_id: `SA001`,
+        title: `PRIMA REGENCY`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
         updated_at: new Date().toISOString()
       },
       {
-        id: 'adv-02',
-        property_id: 'G-9002',
-        title: 'KLCC Twin Towers Executive Suite',
+        id: 'adv-sa002',
+        property_id: `SA002`,
+        title: `KSL DAYA RESIDENCES`,
         selected_by_sales: false,
-        status: 'pending',
-        iproperty_link: '',
-        propertyguru_link: '',
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa003',
+        property_id: `SA003`,
+        title: `MEDINI SIGNATURE`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa004',
+        property_id: `SA004`,
+        title: `SOUTHERN MARINA`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa005',
+        property_id: `SA005`,
+        title: `TEBRAU CITY RESIDENCES, JALAN HARMONIUM 24/2`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa006',
+        property_id: `SA006`,
+        title: `SAKURA RESIDENCE`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa007',
+        property_id: `SA007`,
+        title: `JALAN GLASIAR, TAMAN TASEK `,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa008',
+        property_id: `SA008`,
+        title: `COUNTRY GARDEN DANGA BAY@AMBERSIDE`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa009',
+        property_id: `SA009`,
+        title: `COUNTRY GARDEN DANGA BAY@BAY POINT`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa010',
+        property_id: `SA010`,
+        title: `COUNTRY GARDEN DANGA BAY@BAY POINT`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa011',
+        property_id: `SA011`,
+        title: `JALAN KEPAYANG, TAMAN KOTA JAYA`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa012',
+        property_id: `SA012`,
+        title: `GREEN HAVEN`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa013',
+        property_id: `SA013`,
+        title: `JALAN DATO JAAFAR 24, TAMAN MUTIARA DESARU`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa014',
+        property_id: `SA014`,
+        title: `SUNGAI SULOH BESAR, MUKIM MINYAK BEKU, SENGGARANG`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa015',
+        property_id: `SA015`,
+        title: `PARADIGM RESIDENCE`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa016',
+        property_id: `SA016`,
+        title: `MEDINI SIGNATURE`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa017',
+        property_id: `SA017`,
+        title: `JALAN KENANGA 29/11, KULAI`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa018',
+        property_id: `SA018`,
+        title: `JALAN KENANGA 29/11, KULAI`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa019',
+        property_id: `SA019`,
+        title: `JALAN KENANGA 29/11, KULAI`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa020',
+        property_id: `SA020`,
+        title: `MIDORI GREEN`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa021',
+        property_id: `SA021`,
+        title: `RNF PRINCESS COVE PHASE 1`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa022',
+        property_id: `SA022`,
+        title: `PARAGON RESIDENCE`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa023',
+        property_id: `SA023`,
+        title: `D' AMBIENCE RESIDENCES`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa024',
+        property_id: `SA024`,
+        title: `CUBE 166, JP PERDANA, JALAN JAYA PUTRA 3/2`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa025',
+        property_id: `SA025`,
+        title: `WAVE MARINA COVE`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa026',
+        property_id: `SA026`,
+        title: `PANDAN RESIDENCE 2`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa027',
+        property_id: `SA027`,
+        title: `COUNTRY GARDEN@CENTRAL PARK`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa028',
+        property_id: `SA028`,
+        title: `JALAN PERMAS 15/1, BANDAR PERMAS JAYA`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa029',
+        property_id: `SA029`,
+        title: `ENCORP MARINA`,
+        selected_by_sales: false,
+        status: `published`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'adv-sa030',
+        property_id: `SA030`,
+        title: `ENCORP MARINA`,
+        selected_by_sales: false,
+        status: `pending`,
+        iproperty_link: ``,
+        propertyguru_link: ``,
         updated_at: new Date().toISOString()
       }
     ]);
 
     // 5. Co-Agency (MATCHING_COA)
     setLocal('matching_coa', [
+{
+        id: 'coa-sa001',
+        property_id: `SA001`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
       {
-        id: 'coa-01',
-        property_id: 'G-9001',
-        external_agent_name: 'Raffael Miller (Vantage Prop)',
-        external_agent_contact: '+6017-4433-221',
-        commission_split: '50/50 co-broke',
-        remarks: 'Shared keys. Viewings must be booked 24 hours prior.',
+        id: 'coa-sa002',
+        property_id: `SA002`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa003',
+        property_id: `SA003`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa004',
+        property_id: `SA004`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa005',
+        property_id: `SA005`,
+        external_agent_name: `JACQUEEN & BOON SIONG`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa006',
+        property_id: `SA006`,
+        external_agent_name: `JACQUEEN & BOON SIONG`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa007',
+        property_id: `SA007`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa008',
+        property_id: `SA008`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa009',
+        property_id: `SA009`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa010',
+        property_id: `SA010`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa011',
+        property_id: `SA011`,
+        external_agent_name: `JACQUEEN & BOON SIONG`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa012',
+        property_id: `SA012`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa013',
+        property_id: `SA013`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa014',
+        property_id: `SA014`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa015',
+        property_id: `SA015`,
+        external_agent_name: `JACQUEEN & BOON SIONG`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa016',
+        property_id: `SA016`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa017',
+        property_id: `SA017`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa018',
+        property_id: `SA018`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa019',
+        property_id: `SA019`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa020',
+        property_id: `SA020`,
+        external_agent_name: `JACQUEEN`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa021',
+        property_id: `SA021`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa022',
+        property_id: `SA022`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa023',
+        property_id: `SA023`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa024',
+        property_id: `SA024`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa025',
+        property_id: `SA025`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa026',
+        property_id: `SA026`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa027',
+        property_id: `SA027`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa028',
+        property_id: `SA028`,
+        external_agent_name: ``,
+        external_agent_contact: '',
+        commission_split: ``,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa029',
+        property_id: `SA029`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
+        updated_at: new Date().toISOString()
+      },
+      {
+        id: 'coa-sa030',
+        property_id: `SA030`,
+        external_agent_name: `✓ ALL OK`,
+        external_agent_contact: '',
+        commission_split: `50/50`,
+        remarks: '',
         updated_at: new Date().toISOString()
       }
     ]);
 
-    // 6. Resolving Sales (RESOLVING)
-    setLocal('resolving_sales', [
-      {
-        id: 'rsl-01',
-        property_id: 'G-9001',
-        deal_stage: 'booking',
-        buyer_name: 'Chloe Tan',
-        buyer_contact: '+6016-1122-334',
-        legal_status: 'drafting_agreement',
-        banking_status: 'applying_loan',
-        salesperson_id: 'usr-sales-sarah',
-        salesperson_name: 'Sarah Connor',
-        total_commission: 48000, // 2% of 2.4M
-        company_share: 19200, // 40%
-        agent_share: 28800, // 60%
-        closed_at: new Date().toISOString()
-      }
-    ]);
+    // 6. Resolving Sales (RESOLVING) - Starts empty
+    setLocal('resolving_sales', []);
 
     // 7. Audit logs
     setLocal('audit_logs', [
       {
         id: 'log-01',
-        timestamp: new Date(Date.now() - 3600000 * 5).toISOString(),
+        timestamp: new Date().toISOString(),
         user_id: 'usr-admin-01',
         user_name: 'Commander Navin (Admin)',
         action: 'SYSTEM_STARTUP',
-        details: 'GYDEN Property System 2.0 database nodes initialized successfully.'
+        details: 'GYDEN Property System 2.0 database nodes initialized with Excel SA001-SA030 test seed.'
       }
     ]);
 
