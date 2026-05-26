@@ -151,7 +151,7 @@ const setLocal = <T>(key: string, value: T): void => {
 
 // Initial Mock Seed Data
 const initMockData = () => {
-  if (!localStorage.getItem('gyden2_initialized')) {
+  if (!localStorage.getItem('gyden2_initialized_v4')) {
     // 1. Listings Staging (LISTING_NEW) - Starts empty
     setLocal('listings_new', []);
 
@@ -2532,7 +2532,7 @@ Contract end Jan 2026
       }
     ]);
 
-    localStorage.setItem('gyden2_initialized', 'true');
+    localStorage.setItem('gyden2_initialized_v4', 'true');
   }
 
   // Seeding portal accounts independently if they do not exist or are missing defaults (prevents local storage cache bypass)
