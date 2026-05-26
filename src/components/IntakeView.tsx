@@ -641,7 +641,7 @@ export const IntakeView: React.FC<IntakeViewProps> = ({ currentUser, onNavigateT
               {/* Photo upload component */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-secondary)', fontFamily: 'JetBrains Mono' }}>
-                  Property Photos (At least 1 photo or GDrive link required)
+                  Property Photos (Optional - Google Drive Link can be used instead)
                 </label>
                 
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
